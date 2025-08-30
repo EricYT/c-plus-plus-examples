@@ -2,6 +2,9 @@
 add_library(common STATIC
     utils.h
     utils.cc
+    slice.h
+    status.h
+    status.cc
 )
 
 # 暴露头文件目录(其他示例可通过#include <utils.h>引用)
