@@ -12,6 +12,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)  # 禁用编译器扩展(如g++的gnu++17)
 # 加载通用编译选项(可选，见下方cmake/CompilerOptions.cmake)
 include(cmake/CompilerOptions.cmake)
 
+# common options
+option(ENABLE_DEBUG "Enable DEBUG verbose message" ON)
+
+if(ENABLE_DEBUG)
+  add_compile_definitions(ENABLE_DEBUG)
+endif()
+
 # 添加公共工具库(如果有common目录)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/common/CMakeLists.txt)
     add_subdirectory(common)

@@ -45,3 +45,6 @@ build/
 
 # vim swp files
 *.swp
+
+# clang cache directory
+.cache/

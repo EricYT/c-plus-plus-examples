@@ -5,6 +5,7 @@ add_library(common STATIC
     slice.h
     status.h
     status.cc
+    debug.h
 )
 
 # 暴露头文件目录(其他示例可通过#include <utils.h>引用)
