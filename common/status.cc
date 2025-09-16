@@ -1,9 +1,10 @@
+#include "status.h"
+
 #include <stdint.h>
+
+#include <cassert>
 #include <cstring>
 #include <utility>
-#include <cassert>
-
-#include "status.h"
 
 Status::Status(const Status& rhs) {
   state_ = (rhs.state_ == nullptr) ? nullptr : CopyState(rhs.state_);
@@ -48,15 +49,15 @@ std::string Status::ToString() const {
         type = "IOError: ";
         break;
       default:
-        std::snprintf(tmp, sizeof(tmp),
-            "Unknow code(%d)", static_cast<int>(code()));
+        std::snprintf(tmp, sizeof(tmp), "Unknow code(%d)",
+                      static_cast<int>(code()));
         type = tmp;
         break;
     }
     std::string result(type);
     uint32_t msg_len;
     std::memcpy(&msg_len, state_, sizeof(msg_len));
-    result.append(state_+5, msg_len);
+    result.append(state_ + 5, msg_len);
     return result;
   }
 }
@@ -77,11 +78,11 @@ Status::Status(Code code, const Slice& msg1, const Slice& msg2) {
   char* result = new char[size + 5];
   std::memcpy(result, &size, sizeof(size));
   result[4] = static_cast<char>(code);
-  std::memcpy(result+5, msg1.data(), len1);
+  std::memcpy(result + 5, msg1.data(), len1);
   if (len2) {
     result[5 + len1] = ':';
     result[6 + len1] = ' ';
-    std::memcpy(result+5+len1+2, msg2.data(), msg2.size());
+    std::memcpy(result + 5 + len1 + 2, msg2.data(), msg2.size());
   }
   state_ = result;
 }

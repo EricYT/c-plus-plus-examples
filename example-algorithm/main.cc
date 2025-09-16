@@ -1,12 +1,12 @@
+#include <algorithm>
+#include <cassert>
 #include <functional>
 #include <iostream>
-#include <string>
-#include <algorithm>
 #include <set>
-#include <cassert>
+#include <string>
 
-#include "slice.h"
 #include "debug.h"
+#include "slice.h"
 
 struct BySmallestKey {
   // NOTE: operator() must be a const function
@@ -17,7 +17,6 @@ struct BySmallestKey {
 };
 
 typedef std::set<Slice*, BySmallestKey> SliceSet;
-
 
 void TestAlgorithm() {
   std::cout << "Algorithm test start\n";
@@ -38,8 +37,11 @@ void TestAlgorithm() {
 
   Slice tmp("def");
   auto pos = std::upper_bound(ss.begin(), ss.end(), &tmp, cmp);
-  // auto pos = ss.upper_bound(&tmp);  // this way we can ignore the cmp operator
-  std::cout << tmp.to_string() << " upper bound pos: " << std::distance(ss.begin(), pos) << std::endl;
+  // auto pos = ss.upper_bound(&tmp);  // this way we can ignore the cmp
+  // operator
+  std::cout << tmp.to_string()
+            << " upper bound pos: " << std::distance(ss.begin(), pos)
+            << std::endl;
 }
 
 int main() {

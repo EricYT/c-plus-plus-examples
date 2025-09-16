@@ -1,7 +1,7 @@
+#include "writable_file.h"
+
 #include <fcntl.h>
 #include <unistd.h>
-
-#include "writable_file.h"
 
 Status PosixError(const char* filename, int errcode) {
   if (errcode == ENOENT) {
@@ -19,8 +19,7 @@ Status RemoveFile(const std::string& fname) {
 }
 
 Status NewWritableFile(const std::string& fname, WritableFile** file) {
-  int fd = ::open(fname.c_str(),
-     O_TRUNC | O_WRONLY | O_CREAT, 0644);
+  int fd = ::open(fname.c_str(), O_TRUNC | O_WRONLY | O_CREAT, 0644);
   if (fd < 0) {
     *file = nullptr;
     return PosixError(fname.c_str(), errno);
@@ -29,7 +28,8 @@ Status NewWritableFile(const std::string& fname, WritableFile** file) {
   return Status::OK();
 }
 
-Status DoWriteStringToFile(const Slice& data, const std::string& fname, bool should_sync) {
+Status DoWriteStringToFile(const Slice& data, const std::string& fname,
+                           bool should_sync) {
   WritableFile* file;
   Status s = NewWritableFile(fname, &file);
   if (!s.ok()) {
