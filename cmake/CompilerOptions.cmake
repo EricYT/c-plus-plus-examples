@@ -15,6 +15,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # Clang特定选项
     add_compile_options(-Wno-unused-private-field)  # 抑制未使用私有成员警告
+    add_compile_options(-Wthread-safety)  # 添加 thread safety 告警
 elseif(MSVC)
     # MSVC(Visual Studio)特定选项
     add_compile_options(/W4 /wd4505)  # 警告级别4，忽略未使用函数警告

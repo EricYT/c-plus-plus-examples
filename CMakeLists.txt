@@ -14,6 +14,7 @@ include(cmake/CompilerOptions.cmake)
 
 # common options
 option(ENABLE_DEBUG "Enable DEBUG verbose message" ON)
+option(BUILD_TESTS "Build exmaple unit tests" ON)
 
 if(ENABLE_DEBUG)
   add_compile_definitions(ENABLE_DEBUG)
@@ -36,3 +37,27 @@ foreach(DIR ${EXAMPLE_DIRS})
         endif()
     endif()
 endforeach()
+
+if(BUILD_TESTS)
+  enable_testing()
+
+  set(install_gtest OFF)
+  set(install_gmock OFF)
+  set(build_gmock ON)
+
+  add_subdirectory("third_party/googletest")
+
+  add_executable(
+    cpp_examples_test
+    common/coding_test.cc
+  )
+  target_link_libraries(cpp_examples_test
+    PRIVATE
+    common
+    GTest::gtest_main
+  )
+
+  include(GoogleTest)
+  gtest_discover_tests(cpp_examples_test)
+
+endif()

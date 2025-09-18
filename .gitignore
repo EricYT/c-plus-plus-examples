@@ -48,3 +48,6 @@ build/
 
 # clang cache directory
 .cache/
+
+# thrid party
+third_party/

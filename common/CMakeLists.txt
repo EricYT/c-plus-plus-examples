@@ -1,5 +1,10 @@
 # 创建静态库(不链接，仅编译为库文件供其他示例使用)
 add_library(common STATIC
+    coding.h
+    coding.cc
+    mutexlock.h
+    port_stdcxx.h
+    thread_annotations.h
     utils.h
     utils.cc
     slice.h
