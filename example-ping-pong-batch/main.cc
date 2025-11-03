@@ -70,7 +70,8 @@ Status DBImpl::Write(WriteBatch* updates) {
 
     std::cout << "DBImpl::Write something like write wal logs" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "DBImpl::Write batch cnt:" << WriteBatchInternal::Count(batch_group) << std::endl;
+    std::cout << "DBImpl::Write batch cnt:"
+              << WriteBatchInternal::Count(batch_group) << std::endl;
 
     status = Status::OK();
 

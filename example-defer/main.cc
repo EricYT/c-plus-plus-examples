@@ -1,24 +1,7 @@
-#include <functional>
 #include <iostream>
 #include <string>
 
-class Defer {
- public:
-  explicit Defer(std::function<void()> func) : func_(std::move(func)) {}
-  ~Defer() {
-    if (func_) func_();
-  }
-
-  Defer(const Defer&) = delete;
-  Defer& operator=(const Defer&) = delete;
-
- private:
-  std::function<void()> func_;
-};
-
-#define CONCAT(x, y) CONCAT2(x, y)
-#define CONCAT2(x, y) x##y
-#define DEFER(...) Defer CONCAT(__defer_, __LINE__)([]() { __VA_ARGS__; })
+#include "defer.h"
 
 void TestDefer() {
   std::cout << "Defer test start\n";
@@ -31,7 +14,39 @@ void TestDefer() {
   std::cout << "Defer test end\n";
 }
 
+class Callable {
+ public:
+   Callable() = default;
+   ~Callable() = default;
+
+   // implement operator (), so defer can call it by operator ()
+   void operator()() {
+     std::cout << "Callable called\n";
+   }
+ private:
+};
+
+void TestDeferV1() {
+  std::cout << "Defer test start v1\n";
+  {
+    std::cout << "Defer test before\n";
+    // must assign defer result to a lvalue, otherwise defer called deconstruction after line 22
+    // IF we don't get the result, defer returns treated temporary object, after defer called, the value
+    // deconstruction
+    auto _a = defer([] () { std::cout << "Defer 1\n"; });
+    auto _b = defer([] () { std::cout << "Defer 2\n"; });
+    std::cout << "Defer test after\n";
+  }
+  {
+    std::cout << "Defer test before callable\n";
+    auto _ = defer(Callable{});
+    std::cout << "Defer test after callable\n";
+  }
+  std::cout << "Defer test end v1\n";
+}
+
 int main() {
   TestDefer();
+  TestDeferV1();
   return 0;
 }
