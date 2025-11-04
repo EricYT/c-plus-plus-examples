@@ -1,15 +1,16 @@
+#include <cassert>
 #include <iostream>
 #include <memory>
-#include <string>
 #include <set>
-#include <cassert>
+#include <string>
 
 void TestStdSet() {
   struct Foo {
     uint64_t key;
     std::string value;
 
-    explicit Foo(uint64_t key, const std::string& value) : key(key), value(value) {}
+    explicit Foo(uint64_t key, const std::string& value)
+        : key(key), value(value) {}
   };
 
   struct FooCompare {
@@ -27,13 +28,9 @@ void TestStdSet() {
 
   fs.emplace(1, "foo");
   assert(fs.size() == 2U);
-
 }
 
-
-void TestTmp() {
-  TestStdSet();
-}
+void TestTmp() { TestStdSet(); }
 
 int main() {
   TestTmp();

@@ -1,8 +1,5 @@
 #include <cassert>
 
-namespace WAL {
-};  // namespace WAL
+namespace WAL {};  // namespace WAL
 
-int main() {
-  return 0;
-}
+int main() { return 0; }

@@ -13,7 +13,7 @@ bool TimeWheel::AddTimer(Timer* t) {
   } else {
     delta = t->expires - now;
   }
-  if (delta >= (1ULL << (TVN_NUM*TVN_BITS))) {
+  if (delta >= (1ULL << (TVN_NUM * TVN_BITS))) {
     return false;
   }
 
@@ -27,7 +27,8 @@ bool TimeWheel::AddTimer(Timer* t) {
     slot_idx = (adjusted_delta >> shift) & (TVN_SIZE - 1);
   }
 
-  std::cout << "expires:" << t->expires << " level:" << level << " slot:" << slot_idx << std::endl;
+  std::cout << "expires:" << t->expires << " level:" << level
+            << " slot:" << slot_idx << std::endl;
   tv_[level][slot_idx].push_back(t);
 
   return true;
@@ -70,14 +71,15 @@ void TimeWheel::Tick() {
 }
 
 int TimeWheel::GetLevel(jiffies delta) const {
-  if (delta < (1 << TVN_BITS)) return 0;    // [0, 255]
-  if (delta < (1 << (TVN_BITS*2))) return 1;// [256, 131071]
-  if (delta < (1 << (TVN_BITS*3))) return 2;// [131072, 33554431]
-  return 3;                                 // [33554432, 8589934591]
+  if (delta < (1 << TVN_BITS)) return 0;        // [0, 255]
+  if (delta < (1 << (TVN_BITS * 2))) return 1;  // [256, 131071]
+  if (delta < (1 << (TVN_BITS * 3))) return 2;  // [131072, 33554431]
+  return 3;                                     // [33554432, 8589934591]
 }
 
 void TimeWheel::Cascade(int level) {
-  std::cout << "Cascade level:" << level << " slot:" << tv_idx_[level] << std::endl;
+  std::cout << "Cascade level:" << level << " slot:" << tv_idx_[level]
+            << std::endl;
   if (level >= TVN_NUM) return;
 
   auto& curr_slot = tv_[level][tv_idx_[level]];
@@ -91,7 +93,7 @@ void TimeWheel::Cascade(int level) {
   }
 
   tv_idx_[level] = (tv_idx_[level] + 1) % TVN_SIZE;
-  if (tv_idx_[level] == 0 && level+1 < TVN_NUM) {
+  if (tv_idx_[level] == 0 && level + 1 < TVN_NUM) {
     Cascade(level + 1);
   }
 }
