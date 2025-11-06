@@ -11,6 +11,9 @@ add_library(common STATIC
     status.h
     status.cc
     debug.h
+    xassert.h
+    bitopts.h
+    strutils.h
 )
 
 # 暴露头文件目录(其他示例可通过#include <utils.h>引用)

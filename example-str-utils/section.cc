@@ -5,7 +5,7 @@
 #include <limits>
 #include <stdexcept>
 
-#include "string.h"
+#include "strutils.h"
 
 template <>
 int32_t Section::Get<int32_t>(const std::string& key,
@@ -36,7 +36,7 @@ int64_t Section::Get<int64_t>(const std::string& key,
     return def;
   }
   try {
-    long val = std::stoll(it->second);
+    long long val = std::stoll(it->second);
     if (val < std::numeric_limits<int64_t>::min() ||
         val > std::numeric_limits<int64_t>::max()) {
       return def;
@@ -78,7 +78,7 @@ uint64_t Section::Get<uint64_t>(const std::string& key,
     return def;
   }
   try {
-    long val = std::stoul(it->second);
+    long long val = std::stoul(it->second);
     if (val < std::numeric_limits<uint64_t>::min() ||
         val > std::numeric_limits<uint64_t>::max()) {
       return def;

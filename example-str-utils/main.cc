@@ -1,9 +1,11 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <limits>
 
 #include "section.h"
-#include "string.h"
+#include "strutils.h"
+#include "xassert.h"
 
 void TestTrimString() {
   assert("hello" == trim("hello"));
@@ -93,7 +95,7 @@ void TestParseIniFile() {
   assert(s1.Get<std::string>("key2", "") == "hello world");
 
   const Section& s2 = sections["section2"];
-  assert(s2.Empty());
+  ASSERT(s2.Empty());
 }
 
 int main() {
