@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "assert.h"
+#include "xassert.h"
 
 template <typename T>
 inline constexpr T align_up(T v, T align) {

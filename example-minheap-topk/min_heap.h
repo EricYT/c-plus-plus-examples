@@ -5,6 +5,8 @@
 #include <queue>
 #include <vector>
 
+#include "xassert.h"
+
 template <typename T, typename Container = std::vector<T>,
           typename Compare = std::greater<T>>
 struct MinHeap : std::priority_queue<T, Container, Compare> {
