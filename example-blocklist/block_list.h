@@ -1,9 +1,9 @@
 #ifndef __EXAMPLE_BLOCK_LIST__
 #define __EXAMPLE_BLOCK_LIST__
 
+#include <chrono>
 #include <unordered_map>
 #include <vector>
-#include <chrono>
 
 enum Error : int16_t {
   OK = 0,
@@ -22,14 +22,14 @@ enum BlockType : uint8_t {
 
 inline std::ostream& operator<<(std::ostream& os, const BlockType& type) {
   switch (type) {
-  case BLOCK_TYPE_CONNECT_ERROR:
-    os << "BlockTypeConnectError";
-    break;
-  case BLOCK_TYPE_DISK_ERROR:
-    os << "BlockTypeDiskError";
-    break;
-  default:
-    os << "UnknowBlockType";
+    case BLOCK_TYPE_CONNECT_ERROR:
+      os << "BlockTypeConnectError";
+      break;
+    case BLOCK_TYPE_DISK_ERROR:
+      os << "BlockTypeDiskError";
+      break;
+    default:
+      os << "UnknowBlockType";
   }
   return os;
 }
@@ -42,42 +42,45 @@ struct BlockPolicy {
 using BlockPolicyTable = std::unordered_map<BlockType, BlockPolicy>;
 
 class BlockList {
-  public:
-    explicit BlockList(uint32_t cap, const BlockPolicyTable& block_policy) : cap_(cap), block_policy_(block_policy) {}
+ public:
+  explicit BlockList(uint32_t cap, const BlockPolicyTable& block_policy)
+      : cap_(cap), block_policy_(block_policy) {}
 
-    ~BlockList() {}
+  ~BlockList() {}
 
-    void ReportFailed(VDiskId vdisk_id, int r);
+  void ReportFailed(VDiskId vdisk_id, int r);
 
-    bool IsBlock(VDiskId vdisk_id) const {
-      return block_items_.find(vdisk_id) != block_items_.end();
-    }
+  bool IsBlock(VDiskId vdisk_id) const {
+    return block_items_.find(vdisk_id) != block_items_.end();
+  }
 
-    void GetBlockList(std::vector<VDiskId>* vdisks);
+  void GetBlockList(std::vector<VDiskId>* vdisks);
 
-    void Process();
+  void Process();
 
-  private:
-    struct BlockItem {
-      BlockType type;
-      uint64_t block_timestamp;
+ private:
+  struct BlockItem {
+    BlockType type;
+    uint64_t block_timestamp;
 
-      explicit BlockItem(BlockType type, uint64_t t) : type(type), block_timestamp(t) {}
-    };
+    explicit BlockItem(BlockType type, uint64_t t)
+        : type(type), block_timestamp(t) {}
+  };
 
-    using FailedTimestamp = uint64_t;
-    using SuspectRecords = std::unordered_map<BlockType, std::vector<FailedTimestamp>>;
+  using FailedTimestamp = uint64_t;
+  using SuspectRecords =
+      std::unordered_map<BlockType, std::vector<FailedTimestamp>>;
 
-    static uint64_t Now() {
-      return std::chrono::system_clock::now().time_since_epoch().count();
-    }
+  static uint64_t Now() {
+    return std::chrono::system_clock::now().time_since_epoch().count();
+  }
 
-  private:
-    const uint32_t cap_;
-    const BlockPolicyTable block_policy_;
+ private:
+  const uint32_t cap_;
+  const BlockPolicyTable block_policy_;
 
-    std::unordered_map<VDiskId, BlockItem> block_items_;
-    std::unordered_map<VDiskId, SuspectRecords> suspect_items_;
+  std::unordered_map<VDiskId, BlockItem> block_items_;
+  std::unordered_map<VDiskId, SuspectRecords> suspect_items_;
 };
 
 #endif  // __EXAMPLE_BLOCK_LIST__

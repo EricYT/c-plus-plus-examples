@@ -1,7 +1,7 @@
 #include "lru.h"
 
-#include <string>
 #include <iostream>
+#include <string>
 
 #include "gtest/gtest.h"
 

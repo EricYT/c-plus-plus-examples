@@ -1,16 +1,14 @@
 #include <stdlib.h>
 
-void* sub_create(unsigned int size) {
-  return malloc(size);
-}
+void* sub_create(unsigned int size) { return malloc(size); }
 
 void* create(unsigned int size) {
-  sub_create(size/2);
+  sub_create(size / 2);
   return malloc(size);
 }
 
 void create_destory(unsigned int size) {
-  void *p = create(size);
+  void* p = create(size);
   free(p);
 }
 

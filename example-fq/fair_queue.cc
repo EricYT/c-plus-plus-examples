@@ -2,11 +2,10 @@
 
 #include "xassert.h"
 
-ClientReqeustQueue::ClientReqeustQueue(const ClientID client_id) : client_id_(client_id) {
-}
+ClientReqeustQueue::ClientReqeustQueue(const ClientID client_id)
+    : client_id_(client_id) {}
 
-ClientReqeustQueue::~ClientReqeustQueue() {
-}
+ClientReqeustQueue::~ClientReqeustQueue() {}
 
 void ClientReqeustQueue::Push(const Request& req) {
   ASSERT(req.client_id == client_id_);

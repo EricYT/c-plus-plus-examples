@@ -1,32 +1,36 @@
-#include <iostream>
-
 #include "block_list.h"
+
+#include <iostream>
 
 static BlockType ConvertErrorToBlockType(int r) {
   switch (r) {
-  case ERROR_CONNECT:
-    return BLOCK_TYPE_CONNECT_ERROR;
-  case ERROR_IO_ERROR:
-    return BLOCK_TYPE_DISK_ERROR;
-  default:
-    return BLOCK_TYPE_NUM;
+    case ERROR_CONNECT:
+      return BLOCK_TYPE_CONNECT_ERROR;
+    case ERROR_IO_ERROR:
+      return BLOCK_TYPE_DISK_ERROR;
+    default:
+      return BLOCK_TYPE_NUM;
   }
 }
 
 void BlockList::ReportFailed(VDiskId vdisk_id, int r) {
-  std::cout << "ReportFailed vdisk_id:" << vdisk_id << " error:" << r << std::endl;
+  std::cout << "ReportFailed vdisk_id:" << vdisk_id << " error:" << r
+            << std::endl;
   BlockType type = ConvertErrorToBlockType(r);
   if (type == BLOCK_TYPE_NUM) {
-    std::cout << "ReportFailed vdisk_id:" << vdisk_id << " unknow error:" << r << std::endl;
+    std::cout << "ReportFailed vdisk_id:" << vdisk_id << " unknow error:" << r
+              << std::endl;
     return;
   }
   if (IsBlock(vdisk_id)) {
-    std::cout << "ReportFailed vdisk already blocked. vdisk_id:" << vdisk_id << std::endl;
+    std::cout << "ReportFailed vdisk already blocked. vdisk_id:" << vdisk_id
+              << std::endl;
     return;
   }
   const auto& bp_iter = block_policy_.find(type);
   if (bp_iter == block_policy_.end()) {
-    std::cout << "ReportFailed vdisk_id:" << vdisk_id << " unable to find policy for " << type << std::endl;
+    std::cout << "ReportFailed vdisk_id:" << vdisk_id
+              << " unable to find policy for " << type << std::endl;
     return;
   }
 
@@ -64,5 +68,4 @@ void BlockList::GetBlockList(std::vector<VDiskId>* vdisks) {
   }
 }
 
-void BlockList::Process() {
-}
+void BlockList::Process() {}

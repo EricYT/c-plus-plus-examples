@@ -6,16 +6,14 @@
 
 class Hi {
  public:
-   Hi() {}
-   virtual ~Hi() {
-     std::cout << "Hi deconstruction" << std::endl;
-   }
+  Hi() {}
+  virtual ~Hi() { std::cout << "Hi deconstruction" << std::endl; }
 
-   virtual void SayHi();
+  virtual void SayHi();
 };
 
 class Hello : public Hi {
-public:
+ public:
   Hello() = default;
   ~Hello();
 
@@ -24,15 +22,15 @@ public:
 
 class MapList {
  public:
-   MapList() = default;
-   ~MapList();
+  MapList() = default;
+  ~MapList();
 
-   void Push(uint32_t key, uint32_t val);
+  void Push(uint32_t key, uint32_t val);
 
-   void Run();
+  void Run();
 
  private:
-   std::unordered_map<uint32_t, uint32_t> kvs_;
+  std::unordered_map<uint32_t, uint32_t> kvs_;
 };
 
 void SetPerRoundMaxItemCnt(uint32_t cnt);

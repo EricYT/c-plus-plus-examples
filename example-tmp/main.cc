@@ -1,10 +1,10 @@
 #include <cassert>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <set>
 #include <string>
-#include <map>
 #include <unordered_map>
 
 #include "tmp.h"
@@ -37,9 +37,7 @@ void TestStdSet() {
 
 using RealCallback = std::function<void(int)>;
 
-void Callback(int r) {
-  std::cout << "Callback r:" << r << std::endl;
-}
+void Callback(int r) { std::cout << "Callback r:" << r << std::endl; }
 
 void CallbackWrapper(RealCallback cb, int r) {
   std::cout << "CallbackWrapper r:" << r << std::endl;
@@ -92,12 +90,12 @@ void TestXX() {
   Hello h;
   h.SayHi();
 
-  std::vector<uint32_t> vsc {0, 1, 3, 2, 9, 10, 20, 4, 7};
-  vsc.erase(std::remove_if(vsc.begin(), vsc.end(), [] (uint32_t v) { return  v < 7;}), vsc.end());
+  std::vector<uint32_t> vsc{0, 1, 3, 2, 9, 10, 20, 4, 7};
+  vsc.erase(
+      std::remove_if(vsc.begin(), vsc.end(), [](uint32_t v) { return v < 7; }),
+      vsc.end());
   for (auto& v : vsc) {
-    std::cout << "after remove: "
-      << v
-      << std::endl;
+    std::cout << "after remove: " << v << std::endl;
   }
 
   std::unordered_map<uint32_t, uint32_t> map;
@@ -106,9 +104,7 @@ void TestXX() {
   if (iter == map.end()) {
     std::cout << "xxx" << std::endl;
   }
-  std::cout << "key:" << iter->first
-    << " value:" << iter->second
-    << std::endl;
+  std::cout << "key:" << iter->first << " value:" << iter->second << std::endl;
 }
 
 void TestIterateUnorderedMapByBucket() {
@@ -119,14 +115,13 @@ void TestIterateUnorderedMapByBucket() {
   ml.Run();
 
   for (uint32_t i = 0; i < 15; ++i) {
-    ml.Push(i, i+1);
+    ml.Push(i, i + 1);
   }
   ml.Run();
   ml.Run();
   SetPerRoundMaxItemCnt(20);
   ml.Run();
   ml.Run();
-
 }
 
 void TestMapIterator() {
@@ -137,17 +132,14 @@ void TestMapIterator() {
   // iterate with : dereference to std::pair<key, vlaue>
   // so we just need to use item.first
   for (const auto& item : map) {
-    std::cout << "key:" << item.first
-      << " value:" << item.second
-      << std::endl;
+    std::cout << "key:" << item.first << " value:" << item.second << std::endl;
   }
   // iterate with iterator, iterator is something like pointer to
   // std::pair<key, value> so we have to reference by iter->first
   // or (*iter).first
   for (auto iter = map.cbegin(); iter != map.cend(); ++iter) {
-    std::cout << "key:" << iter->first
-      << " value:" << iter->second
-      << std::endl;
+    std::cout << "key:" << iter->first << " value:" << iter->second
+              << std::endl;
   }
 }
 
@@ -155,7 +147,8 @@ void TestLambdaCapture() {
   uint32_t last_pos = 0;
   uint32_t curr_pos = 0;
   for (uint32_t i = 0; i < 5; ++i) {
-    std::cout << "before curr_pos:" << curr_pos << " last_pos:" << last_pos << std::endl;
+    std::cout << "before curr_pos:" << curr_pos << " last_pos:" << last_pos
+              << std::endl;
     auto func = [&]() {
       last_pos = curr_pos;
       for (uint32_t j = 0; j < 4; j++) {

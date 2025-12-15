@@ -1,8 +1,7 @@
 #include <iostream>
 
-#include "xassert.h"
-
 #include "block_list.h"
+#include "xassert.h"
 
 void TestBlockListWithoutBlockPolicy() {
   BlockList bl(3, {});
@@ -36,7 +35,6 @@ void TestBlockListFunctional() {
   bl.GetBlockList(&vdisks);
   ASSERT(vdisks.size() == 1U);
   ASSERT(vdisks[0] == 3);
-
 }
 
 int main() {

@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "fair_queue.h"
-
 #include "xassert.h"
 
 Request NextRequest(const ClientID client_id) {
