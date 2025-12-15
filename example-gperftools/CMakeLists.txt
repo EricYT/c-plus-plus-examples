@@ -1,10 +1,9 @@
 # 定义可执行文件名称(建议与目录名一致)
-set(EXAMPLE_NAME example-tmp)
+set(EXAMPLE_NAME example-gpt)
 
 # 添加可执行文件
 add_executable(${EXAMPLE_NAME}
     main.cc  # 示例的主文件
-    tmp.cc
 )
 
 # 如果需要链接公共库

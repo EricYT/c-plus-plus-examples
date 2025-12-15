@@ -14,6 +14,7 @@ add_library(common STATIC
     xassert.h
     bitopts.h
     strutils.h
+    lru.h
 )
 
 # 暴露头文件目录(其他示例可通过#include <utils.h>引用)

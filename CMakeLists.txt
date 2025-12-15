@@ -50,6 +50,7 @@ if(BUILD_TESTS)
   add_executable(
     cpp_examples_test
     common/coding_test.cc
+    common/lru_test.cc
   )
   target_link_libraries(cpp_examples_test
     PRIVATE
