@@ -1,0 +1,9 @@
+repos:
+  - repo: https://github.com/cpp-linter/cpp-linter-hooks
+    rev: v1.1.11  # Use the tag or commit you want
+    hooks:
+      - id: clang-format
+        args: [--style=Google] # Other coding style: LLVM, GNU, Chromium, Microsoft, Mozilla, WebKit.
+      - id: clang-tidy
+        args: [--checks=.clang-dity]
+        files: ^(common|example.*)/.*\.(cpp|cc|cxx|h|hpp)$

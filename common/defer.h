@@ -3,6 +3,8 @@
 #include <functional>
 #include <utility>
 
+namespace example {
+
 class Defer {
  public:
   explicit Defer(std::function<void()> func) : func_(std::move(func)) {}
@@ -19,7 +21,7 @@ class Defer {
 
 #define CONCAT(x, y) CONCAT2(x, y)
 #define CONCAT2(x, y) x##y
-#define DEFER(...) Defer CONCAT(__defer_, __LINE__)([]() { __VA_ARGS__; })
+#define DEFER(...) Defer CONCAT(__defer_, __LINE__)([&]() { __VA_ARGS__; })
 
 template <typename Func>
 class deferred_action {
@@ -35,3 +37,5 @@ template <typename Func>
 inline deferred_action<Func> defer(Func&& func) {
   return deferred_action<Func>(std::forward<Func>(func));
 }
+
+}  // namespace example

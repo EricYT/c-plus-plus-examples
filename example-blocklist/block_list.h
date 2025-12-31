@@ -2,6 +2,7 @@
 #define __EXAMPLE_BLOCK_LIST__
 
 #include <chrono>
+#include <iostream>
 #include <unordered_map>
 #include <vector>
 
@@ -20,7 +21,7 @@ enum BlockType : uint8_t {
   BLOCK_TYPE_NUM,
 };
 
-inline std::ostream& operator<<(std::ostream& os, const BlockType& type) {
+inline std::ostream& operator<<(std::ostream& os, BlockType type) {
   switch (type) {
     case BLOCK_TYPE_CONNECT_ERROR:
       os << "BlockTypeConnectError";

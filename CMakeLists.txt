@@ -51,6 +51,7 @@ if(BUILD_TESTS)
     cpp_examples_test
     common/coding_test.cc
     common/lru_test.cc
+    common/defer_test.cc
   )
   target_link_libraries(cpp_examples_test
     PRIVATE

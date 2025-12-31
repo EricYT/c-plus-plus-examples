@@ -7,6 +7,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "defer.h"
 #include "tmp.h"
 
 void TestStdSet() {
@@ -157,6 +158,34 @@ void TestLambdaCapture() {
     };
     func();
   }
+
+  std::vector<uint32_t> pos;
+  for (uint32_t i = 0; i < 100; ++i) {
+    pos.emplace_back(i);
+  }
+  for (auto id : pos) {
+    std::cout << id << std::endl;
+  }
+}
+
+void TestLambdaCapture1() {
+  struct Foo {
+    uint32_t value;
+    explicit Foo(uint32_t v) : value(v) {}
+  };
+
+  auto* fp = new Foo(124U);
+  example::DEFER({ delete fp; });
+  uint32_t u = 123;
+  auto md = [=]() {
+    std::cout << "foo value:" << (fp->value++) << std::endl;
+    std::cout << "u:" << u << std::endl;
+  };
+  std::cout << "before cb\n";
+  md();
+  std::cout << "after cb\n";
+  std::cout << "foo value:" << fp->value++ << std::endl;
+  std::cout << "u:" << u++ << std::endl;
 }
 
 void TestTmp() {
@@ -167,6 +196,7 @@ void TestTmp() {
   TestIterateUnorderedMapByBucket();
   TestMapIterator();
   TestLambdaCapture();
+  TestLambdaCapture1();
 }
 
 int main() {
