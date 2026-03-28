@@ -19,10 +19,6 @@ class Defer {
   std::function<void()> func_;
 };
 
-#define CONCAT(x, y) CONCAT2(x, y)
-#define CONCAT2(x, y) x##y
-#define DEFER(...) Defer CONCAT(__defer_, __LINE__)([&]() { __VA_ARGS__; })
-
 template <typename Func>
 class deferred_action {
  public:
@@ -39,3 +35,8 @@ inline deferred_action<Func> defer(Func&& func) {
 }
 
 }  // namespace example
+
+#define CONCAT(x, y) CONCAT2(x, y)
+#define CONCAT2(x, y) x##y
+#define DEFER(...) \
+  example::Defer CONCAT(__defer_, __LINE__)([&]() { __VA_ARGS__; })

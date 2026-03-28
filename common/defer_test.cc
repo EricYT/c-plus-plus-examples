@@ -4,8 +4,6 @@
 
 #include "gtest/gtest.h"
 
-namespace example {
-
 TEST(DEFER, Defer) {
   int a = 10;
   {
@@ -15,5 +13,3 @@ TEST(DEFER, Defer) {
   }
   ASSERT_EQ(a, 20);
 }
-
-}  // namespace example

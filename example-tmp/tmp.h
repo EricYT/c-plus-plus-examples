@@ -35,4 +35,19 @@ class MapList {
 
 void SetPerRoundMaxItemCnt(uint32_t cnt);
 
+template <typename T, typename UnaryFunc>
+void for_each(const T& t, UnaryFunc f) {
+  for (auto& item : t) {
+    f(item);
+  }
+}
+
+template <typename Input, typename UnaryFunc>
+constexpr UnaryFunc for_each_v1(Input first, Input last, UnaryFunc f) {
+  for (; first != last; ++first) {
+    f(*first);
+  }
+  return f;
+}
+
 #endif  // __EXAMPLE_TMP_TMP_H

@@ -28,7 +28,8 @@ class DBImpl {
 
  private:
   struct Writer {
-    explicit Writer(port::Mutex* mu) : done_(false), cv_(mu) {}
+    explicit Writer(port::Mutex* mu)
+        : batch_(nullptr), done_(false), status_(Status::OK()), cv_(mu) {}
 
     WriteBatch* batch_;
     bool done_;
@@ -49,34 +50,38 @@ Status DBImpl::Write(WriteBatch* updates) {
   w.batch_ = updates;
   w.done_ = false;
 
-  example::MutexLock l(&mu_);
-  writers_.push_back(&w);
-  while (!w.done_ && writers_.front() != &w) {
-    w.cv_.Wait();
-  }
-
-  if (w.done_) {
-    return w.status_;
-  }
-
-  std::cout << "DBImpl::Write fired by" << std::endl;
-
-  // fire
   Status status;
-  auto* last_writer = &w;
-  auto* batch_group = BuildBatchGroup(&last_writer);
+  Writer* last_writer = &w;
+  WriteBatch* batch_group = nullptr;
+
   {
-    mu_.Unlock();
+    example::MutexLock l(&mu_);
+    writers_.push_back(&w);
+    while (!w.done_ && writers_.front() != &w) {
+      w.cv_.Wait();
+    }
 
-    std::cout << "DBImpl::Write something like write wal logs" << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    std::cout << "DBImpl::Write batch cnt:"
-              << WriteBatchInternal::Count(batch_group) << std::endl;
+    if (w.done_) {
+      return w.status_;
+    }
 
-    status = Status::OK();
+    std::cout << "DBImpl::Write fired by" << std::endl;
 
-    mu_.Lock();
+    // fire
+    batch_group = BuildBatchGroup(&last_writer);
+    // Unlock by leaving the scope so the RAII MutexLock destructor runs
   }
+
+  // perform IO / WAL write with lock released
+  std::cout << "DBImpl::Write something like write wal logs" << std::endl;
+  std::this_thread::sleep_for(std::chrono::seconds(1));
+  std::cout << "DBImpl::Write batch cnt:"
+            << WriteBatchInternal::Count(batch_group) << std::endl;
+
+  status = Status::OK();
+
+  // re-acquire lock to notify waiting writers
+  mu_.Lock();
 
   while (true) {
     Writer* ready = writers_.front();
@@ -92,6 +97,8 @@ Status DBImpl::Write(WriteBatch* updates) {
   if (!writers_.empty()) {
     writers_.front()->cv_.Signal();
   }
+
+  mu_.Unlock();
 
   return status;
 }
